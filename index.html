@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlayGround — Hi App</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a 55%, #06b6d4);
+      color: #fff;
+      padding: 24px;
+    }
+    main {
+      max-width: 640px;
+      width: 100%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 40px 36px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+    p { margin: 0 0 16px; line-height: 1.6; color: rgba(255,255,255,0.88); }
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    button {
+      margin-top: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      background: #fff;
+      color: #1e3a8a;
+    }
+    button:hover { background: #e0f2fe; }
+    #count { font-variant-numeric: tabular-nums; }
+    footer { margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="badge">PlayGround &middot; static app</div>
+    <h1>Hi (App) 👋</h1>
+    <p>Your PlayGround project is running. This minimal static page confirms startup, serving, and screenshot capture all work.</p>
+    <p>Clicks so far: <strong id="count">0</strong></p>
+    <button id="hi" type="button">Say hi</button>
+    <footer>Served as static HTML &middot; no build step required</footer>
+  </main>
+  <script>
+    (function () {
+      var n = 0;
+      var count = document.getElementById('count');
+      document.getElementById('hi').addEventListener('click', function () {
+        n += 1;
+        count.textContent = String(n);
+      });
+    })();
+  </script>
+</body>
+</html>
