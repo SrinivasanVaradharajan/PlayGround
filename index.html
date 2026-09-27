@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCERT Buddy — Classes 1–12 Exam Prep for Kids</title>
+<meta name="description" content="Free NCERT study, practice, revision and exam app for Classes 1-12. Study chapters, flashcards, quizzes, mock exams, mistake book and revision plans.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">📚</span>
+    <div><strong>NCERT Buddy</strong><small>Classes 1–12 • Study • Practise • Revise • Exam</small></div>
+  </div>
+  <div class="top-actions">
+    <label class="student-chip">👧🧒 Student
+      <select id="studentSelect" title="Switch student (context isolation)"></select>
+    </label>
+    <button id="addStudentBtn" class="btn ghost" title="Add student profile">+ Add</button>
+    <button id="booksBtn" class="btn ghost" title="Official NCERT textbooks">📖 NCERT Books</button>
+  </div>
+</header>
+
+<div class="setup-bar">
+  <div class="field"><label for="gradeSelect">Class / Grade</label>
+    <select id="gradeSelect"></select></div>
+  <div class="field"><label for="subjectSelect">Subject</label>
+    <select id="subjectSelect"></select></div>
+  <div class="field grow"><label for="chapterSelect">Chapter scope (Ctrl+click for many)</label>
+    <select id="chapterSelect" multiple size="4"></select></div>
+  <div class="field"><label>&nbsp;</label>
+    <button id="allChaptersBtn" class="btn ghost">All chapters</button></div>
+  <div class="scope-pill" id="scopePill">—</div>
+</div>
+
+<nav class="modes" id="modeNav" aria-label="Modes">
+  <button data-mode="study" class="active">📖 Study</button>
+  <button data-mode="audio">🔊 Audio</button>
+  <button data-mode="slides">🖥️ Slides</button>
+  <button data-mode="infographic">🎨 Infographic</button>
+  <button data-mode="flashcards">🃏 Flashcards</button>
+  <button data-mode="quiz">❓ Quiz</button>
+  <button data-mode="practice">✏️ Practice</button>
+  <button data-mode="exam">📝 Mock Exam</button>
+  <button data-mode="evaluate">✅ Evaluate Answers</button>
+  <button data-mode="revision">🔁 Revision</button>
+  <button data-mode="mistakes">🗂️ Mistake Book</button>
+  <button data-mode="report">📊 Report</button>
+  <button data-mode="prep">🎯 Exam Prep</button>
+  <button data-mode="library">📚 Library / PDFs</button>
+</nav>
+
+<main id="main">
+  <!-- STUDY -->
+  <section class="panel" data-panel="study">
+    <div class="card">
+      <h2>Study mode <span class="tag">Concept → Explanation → Example → Key point → Quick check</span></h2>
+      <div class="row">
+        <button class="btn" id="studyQuickBtn">Quick summary</button>
+        <button class="btn" id="studyDetailBtn">Detailed explanation</button>
+        <button class="btn ghost" id="studyPrintBtn">🖨️ Print</button>
+      </div>
+      <div id="studyOut" class="study-out"><p class="hint">Pick a Class, Subject and one or more chapters above, then choose Quick or Detailed. Multi-chapter selections stay separated by chapter.</p></div>
+    </div>
+  </section>
+
+  <!-- AUDIO -->
+  <section class="panel hidden" data-panel="audio">
+    <div class="card">
+      <h2>Audio overview <span class="tag">Intro → Overview → Concepts → Examples → Recap</span></h2>
+      <div class="row">
+        <button class="btn" id="audioBuildBtn">Build script</button>
+        <button class="btn ghost" id="audioPlayBtn">▶️ Listen</button>
+        <button class="btn ghost" id="audioStopBtn">⏹️ Stop</button>
+      </div>
+      <pre id="audioOut" class="script">Audio script will appear here. Uses your device's text-to-speech — no recording needed.</pre>
+    </div>
+  </section>
+
+  <!-- SLIDES -->
+  <section class="panel hidden" data-panel="slides">
+    <div class="card">
+      <h2>Slide deck</h2>
+      <div class="row"><button class="btn" id="slidesBuildBtn">Build slides</button>
+        <button class="btn ghost" id="slidesPrintBtn">🖨️ Print slides</button></div>
+      <div id="slidesOut" class="slides"></div>
+    </div>
+  </section>
+
+  <!-- INFOGRAPHIC -->
+  <section class="panel hidden" data-panel="infographic">
+    <div class="card">
+      <h2>Infographic</h2>
+      <div class="row"><button class="btn" id="infoBuildBtn">Build infographic</button></div>
+      <div id="infoOut" class="infographic"><p class="hint">One-page visual: concepts, definitions, processes, facts.</p></div>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section class="panel hidden" data-panel="flashcards">
+    <div class="card">
+      <h2>Flashcards</h2>
+      <div class="row">
+        <button class="btn" id="fcBuildBtn">Build cards</button>
+        <button class="btn ghost" id="fcShuffleBtn">🔀 Shuffle</button>
+        <span id="fcCount" class="tag"></span>
+      </div>
+      <div class="fc-stage"><div id="fcCard" class="fc-card"><div class="fc-inner"><div class="fc-front" id="fcFront">Tap “Build cards”</div><div class="fc-back" id="fcBack"></div></div></div></div>
+      <div class="row"><button class="btn ghost" id="fcPrevBtn">◀ Prev</button>
+        <button class="btn ghost" id="fcFlipBtn">Flip (tap card too)</button>
+        <button class="btn ghost" id="fcNextBtn">Next ▶</button>
+        <button class="btn" id="fcKnownBtn">✓ I know this</button>
+        <button class="btn ghost" id="fcUnknownBtn">✗ Revise again</button></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel hidden" data-panel="quiz">
+    <div class="card">
+      <h2>Quiz engine <span class="tag">MCQ • True/False • Blanks • Short/Long • Match • Assertion/Reason • Case • Diagram • Numerical</span></h2>
+      <div class="quiz-setup">
+        <label>Questions <input id="quizCount" type="number" value="8" min="3" max="30"></label>
+        <label>Difficulty <select id="quizDiff"><option value="Mixed">Mixed</option><option>Easy</option><option>Medium</option><option>Hard</option><option>Exam Level</option><option>Weak Areas</option><option>Previous Mistakes</option></select></label>
+        <label>Mode <select id="quizMode"><option value="practice">Practice (instant feedback)</option><option value="exam">Exam (feedback at end)</option></select></label>
+        <button class="btn" id="quizStartBtn">Start quiz</button>
+        <button class="btn ghost" id="quizMistakesBtn">Quiz me on my mistakes</button>
+      </div>
+      <div id="quizOut"></div>
+      <div class="row hidden" id="quizSubmitRow"><button class="btn" id="quizSubmitBtn">Submit quiz</button></div>
+      <div id="quizReport"></div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section class="panel hidden" data-panel="practice">
+    <div class="card">
+      <h2>Practice mode <span class="tag">Question → Answer → Evaluation → Explanation → Memory tip → Next</span></h2>
+      <div class="row"><button class="btn" id="practiceNextBtn">Next practice question</button></div>
+      <div id="practiceOut"><p class="hint">One question at a time with instant evaluation.</p></div>
+    </div>
+  </section>
+
+  <!-- EXAM -->
+  <section class="panel hidden" data-panel="exam">
+    <div class="card">
+      <h2>Mock / Model exam generator <span class="tag">Always labelled “Model/Practice Exam” unless official pattern given</span></h2>
+      <div class="exam-setup">
+        <label>Type <select id="examType"><option>Unit Test</option><option>Periodic Test</option><option>Quarterly</option><option>Half-Yearly</option><option>Annual</option><option>Revision</option><option>Custom</option></select></label>
+        <label>Marks <input id="examMarks" type="number" value="50" min="10" max="100"></label>
+        <label>Minutes <input id="examTime" type="number" value="90" min="15" max="180"></label>
+        <label>Difficulty <select id="examDiff"><option>Medium</option><option>Easy</option><option>Hard</option><option>Mixed</option></select></label>
+        <button class="btn" id="examGenBtn">Generate paper</button>
+        <button class="btn ghost" id="examPrintBtn">🖨️ Print paper</button>
+      </div>
+      <div class="row"><span id="examTimer" class="timer"></span></div>
+      <div id="examOut"></div>
+      <div class="row hidden" id="examSubmitRow"><button class="btn" id="examSubmitBtn">Submit exam</button></div>
+      <div id="examReport"></div>
+    </div>
+  </section>
+
+  <!-- EVALUATE -->
+  <section class="panel hidden" data-panel="evaluate">
+    <div class="card">
+      <h2>Answer evaluation <span class="tag">Typed answers or uploaded photos/PDF • Textbook-grounded rubric</span></h2>
+      <p class="hint">Paste answers as <b>Q1: answer ... Q2: answer ...</b>, or type under each generated question. You can also attach handwritten photos — transcribe what you can read; if handwriting is unclear the app flags it instead of guessing.</p>
+      <div class="row">
+        <button class="btn ghost" id="evalLoadBtn">Load current scope questions</button>
+        <label class="btn ghost">📷 Attach answer photos <input type="file" id="evalFiles" accept="image/*,.pdf" multiple hidden></label>
+      </div>
+      <div id="evalPhotos" class="photos"></div>
+      <div id="evalOut"></div>
+      <div class="row"><button class="btn" id="evalRunBtn">Evaluate now</button></div>
+      <div id="evalReport"></div>
+    </div>
+  </section>
+
+  <!-- REVISION -->
+  <section class="panel hidden" data-panel="revision">
+    <div class="card">
+      <h2>Revision engine <span class="tag">Review → Flashcards → Practice → Quiz → Retest → Mock</span></h2>
+      <div class="row">
+        <label>Goal <select id="revGoal"><option value="pre-exam">Pre-exam revision</option><option value="weak">Weak-area revision</option><option value="mistakes">Mistake revision</option><option value="full">Full-syllabus revision</option><option value="chapter">Chapter revision</option></select></label>
+        <label>Days left <input id="revDays" type="number" value="7" min="1" max="60"></label>
+        <button class="btn" id="revBuildBtn">Create plan</button>
+        <button class="btn ghost" id="revPrintBtn">🖨️ Print</button>
+      </div>
+      <div id="revOut"></div>
+    </div>
+  </section>
+
+  <!-- MISTAKES -->
+  <section class="panel hidden" data-panel="mistakes">
+    <div class="card">
+      <h2>Mistake book <span class="tag">New questions on the same concept — never just repeated</span></h2>
+      <div class="row"><button class="btn ghost" id="mistClearBtn">Clear my mistake book</button></div>
+      <div id="mistOut"></div>
+    </div>
+  </section>
+
+  <!-- REPORT -->
+  <section class="panel hidden" data-panel="report">
+    <div class="card">
+      <h2>Performance report <span class="tag">Only this student's data — never shared</span></h2>
+      <div class="row"><button class="btn" id="reportBuildBtn">Build my report</button>
+        <button class="btn ghost" id="reportResetBtn">Reset my data</button></div>
+      <div id="reportOut"></div>
+    </div>
+  </section>
+
+  <!-- PREP -->
+  <section class="panel hidden" data-panel="prep">
+    <div class="card">
+      <h2>Exam preparation flow</h2>
+      <div class="prep-steps" id="prepSteps">
+        <div class="step">1. Scope → pick Class + Subject + chapters above</div>
+        <div class="step">2. Time → <input id="prepDays" type="number" value="7" min="1" max="60" style="width:64px"> days,
+          confidence <select id="prepConf"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+        <div class="step">3. <button class="btn" id="prepBuildBtn">Build my pre-exam plan</button></div>
+      </div>
+      <div id="prepOut"></div>
+    </div>
+  </section>
+
+  <!-- LIBRARY -->
+  <section class="panel hidden" data-panel="library">
+    <div class="card">
+      <h2>Textbook library <span class="tag">Official NCERT source + your uploads</span></h2>
+      <p>Official free PDFs for Classes 1–12: <a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">ncert.nic.in/textbook.php</a> (choose Class → Subject → Book Title → chapter PDF). This app links there and never re-hosts books. You can also <b>upload your chapter PDFs</b> below — text is extracted <b>in your browser only</b> and used as the source of truth for study &amp; evaluation.</p>
+      <div class="row">
+        <label class="btn ghost">📤 Upload textbook PDF(s) <input type="file" id="pdfFiles" accept="application/pdf" multiple hidden></label>
+        <button class="btn ghost" id="pdfClearBtn">Remove uploads</button>
+      </div>
+      <div id="pdfOut" class="hint">No PDFs uploaded yet. Uploaded text stays on this device, per student.</div>
+      <div id="ncertIndex"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>NCERT Buddy • Grounded in NCERT textbooks • Model papers are practice-only, not official • Data stays in this browser (localStorage), one profile per student.</span>
+</footer>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
